@@ -4,7 +4,7 @@ Integration with official miner and HiveOS.
 
 
 
-**Automatically creates unique instance for each GPU**
+**No binaries. Downloads official miner from repo.**
 
 In custom miner Extra config arguments, define GPU IDs separated by commas:
 
@@ -29,11 +29,11 @@ NVIDIA
 
 Miner name: veriblock
 
-Installation url: https://github.com/rigamp/veriblock-hiveos/releases/download/v0.9.1/veriblock-0.9.1.tar.gz
+Installation url: https://github.com/rigamp/veriblock-hiveos/releases/download/v0.3.11/veriblock-0.3.11.tar.gz
 
 NVIDIA miner is official miner
  
-https://github.com/VeriBlock/nodecore-pow-cuda-miner/releases/tag/v0.3.7
+https://github.com/VeriBlock/nodecore-pow-cuda-miner/releases/tag/v0.3.11
 
 ***
 

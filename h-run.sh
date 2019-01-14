@@ -4,6 +4,13 @@ export LD_LIBRARY_PATH=/hive/lib
 
 cd `dirname $0`
 
+install_miner() {
+	wget https://github.com/VeriBlock/nodecore-pow-cuda-miner/releases/download/v0.3.11/nodecore-pow-cuda-miner-linux-0.3.11-cuda10.tar.gz
+        tar -zxf nodecore-pow-cuda-miner-linux-0.3.11-cuda10.tar.gz
+	mv nodecore-pow-cuda-miner-linux-0.3.11-cuda10/nodecore_pow_cuda .
+        rm nodecore-pow-cuda-miner-linux-0.3.11-cuda10.tar.gz
+}
+
 [ -t 1 ] && . colors
 
 . h-manifest.conf
@@ -13,28 +20,11 @@ cd `dirname $0`
 [[ ! -f $CUSTOM_CONFIG_FILENAME ]] && echo -e "${RED}Custom config ${YELLOW}$CUSTOM_CONFIG_FILENAME${RED} is not found${NOCOLOR}" && exit 1
 CUSTOM_LOG_BASEDIR=`dirname "$CUSTOM_LOG_BASENAME"`
 [[ ! -d $CUSTOM_LOG_BASEDIR ]] && mkdir -p $CUSTOM_LOG_BASEDIR
+[[ ! -f ./nodecore_pow_cuda ]] && install_miner
 
 
 
-conf1="$(cat /hive/miners/custom/$CUSTOM_NAME/$CUSTOM_NAME.conf)"
-devices="$(echo $conf1 | awk 'match($0,/-d [0-9]+(\,[0-9]+)+?/) {print substr($0, RSTART, RLENGTH)}')"
-device_string="$(echo $devices | cut -d " " -f2)"
-device_array=(`echo $device_string | sed 's/,/\n/g'`)
+conf="$(cat /hive/miners/custom/$CUSTOM_NAME/$CUSTOM_NAME.conf)"
 
-counter=0
-for i in "${device_array[@]}"
-do
-  if (($counter > 0))
-then
-    device_conf="${conf1/$devices/-d $i}"
-    echo "/hive/miners/custom/$CUSTOM_NAME/veriblock-pow $device_conf | tee $CUSTOM_LOG_BASENAME.$i.log" > /hive/miners/custom/$CUSTOM_NAME/$CUSTOM_NAME.$i.sh
-    chmod a+x /hive/miners/custom/$CUSTOM_NAME/$CUSTOM_NAME.$i.sh	
-    sleep 1
-    screen -X screen -t VERIBLOCK-$i /hive/miners/custom/$CUSTOM_NAME/$CUSTOM_NAME.$i.sh
-fi    
-    let counter=counter+1
-done
-first_device=${device_array[0]}
-device_conf="${conf1/$devices/-d $first_device}"
-./veriblock-pow $(echo $device_conf) | tee $CUSTOM_LOG_BASENAME".0.log"
+./nodecore_pow_cuda $(echo $conf) | tee $CUSTOM_LOG_BASENAME".log"
 
