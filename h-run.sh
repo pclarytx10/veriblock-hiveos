@@ -5,7 +5,7 @@ export LD_LIBRARY_PATH=/hive/lib
 cd `dirname $0`
 
 install_miner() {
-	wget https://github.com/VeriBlock/nodecore-pow-cuda-miner/releases/download/v0.3.11/nodecore-pow-cuda-miner-linux-0.3.11-cuda9.2.tar.gzz.
+	wget https://github.com/VeriBlock/nodecore-pow-cuda-miner/releases/download/v0.3.11/nodecore-pow-cuda-miner-linux-0.3.11-cuda9.2.tar.gz
         tar -zxf nodecore-pow-cuda-miner-linux-0.3.11-cuda9.2.tar.gz
 	mv nodecore-pow-cuda-miner-linux-0.3.11-cuda9.2/nodecore_pow_cuda .
         rm nodecore-pow-cuda-miner-linux-0.3.11-cuda9.2.tar.gz
